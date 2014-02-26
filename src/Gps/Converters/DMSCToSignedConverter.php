@@ -1,0 +1,117 @@
+<?php
+
+namespace SimonJakowicz\Gps\Converters;
+
+use SimonJakowicz\Gps\Converters\ConverterInterface;
+
+/**
+ * Used to convert latitude and longitude
+ * From Degrees, Minutes, Seconds and Compass direction format e.g. 41 25 01N, 120 58 57W
+ * To Signed Degree Format e.g. -31.96, 115.84
+ *
+ * @author Simon Jakowicz
+ */
+class DMSCToSignedConverter implements ConverterInterface
+{
+
+    /**
+     * Latitude - Degrees, Minutes, Seconds and Compass direction format
+     * @var string
+     */
+    private $gpsLatitude;
+
+    /**
+     * Latitude compass direction, should be either "N" or "S" for "North" and "South"
+     * @var string
+     */
+    private $gpsLatitudeRef;
+
+    /**
+     * Longitude - Degrees, Minutes, Seconds and Compass direction format
+     * @var string
+     */
+    private $gpsLongitude;
+
+    /**
+     * Longitude compass direction, should be either "E" or "W" for "East" and "West"
+     * @var string
+     */
+    private $gpsLongitudeRef;
+
+    /**
+     * initialise the GPS calculator
+     * @param array  $gpsLatitude
+     * @param string $gpsLatitudeRef
+     * @param array  $gpsLongitude
+     * @param string $gpsLongitudeRef
+     */
+    public function __construct(array $gpsLatitude, $gpsLatitudeDirection, array $gpsLongitude, $gpsLongitudeDirection)
+    {
+        $this->gpsLatitude           = $gpsLatitude;
+        $this->gpsLatitudeDirection  = $gpsLatitudeDirection;
+        $this->gpsLongitude          = $gpsLongitude;
+        $this->gpsLongitudeDirection = $gpsLongitudeDirection;
+    }
+
+    /**
+     * get signed latitude value
+     * @return string
+     */
+    public function getLatitude()
+    {
+        $latitudeDegrees  = count($this->gpsLatitude) > 0 ? $this->gpsValueCalculate($this->gpsLatitude[0]) : 0;
+        $latitudeMinutes  = count($this->gpsLatitude) > 1 ? $this->gpsValueCalculate($this->gpsLatitude[1]) : 0;
+        $latitudeSeconds  = count($this->gpsLatitude) > 2 ? $this->gpsValueCalculate($this->gpsLatitude[2]) : 0;
+        $latitudeFlip     = $this->gpsLatitudeDirection == 'S' ? -1 : 1;
+
+        $latitude         = $latitudeFlip * ($latitudeDegrees + $latitudeMinutes / 60 + $latitudeSeconds / 3600);
+
+        return $latitude;
+
+    }
+
+    /**
+     * get signed longitude value
+     * @return string
+     */
+    public function getLongitude()
+    {
+
+        $longitudeDegrees = count($this->gpsLongitude) > 0 ? $this->gpsValueCalculate($this->gpsLongitude[0]) : 0;
+        $longitudeMinutes = count($this->gpsLongitude) > 1 ? $this->gpsValueCalculate($this->gpsLongitude[1]) : 0;
+        $longitudeSeconds = count($this->gpsLongitude) > 2 ? $this->gpsValueCalculate($this->gpsLongitude[2]) : 0;
+        $longitudeFlip    = $this->gpsLongitudeDirection == 'W' ? -1 : 1;
+        $longitude        = $longitudeFlip * ($longitudeDegrees + $longitudeMinutes / 60 + $longitudeSeconds / 3600);
+
+        return $longitude;
+
+    }
+
+    /**
+     * get signed co-ordinates
+     * @return string
+     */
+    public function getCoordinates()
+    {
+        return $this->getLatitude() . ', ' . $this->getLongitude();
+    }
+
+    /**
+     * calculate a specific GPS value based on its D/M/S/C value
+     * @param  int|string $gpsValue
+     * @return float
+     */
+    private function gpsValueCalculate($gpsValue)
+    {
+        $parts = explode('/', $gpsValue);
+
+        if (count($parts) <= 0) {
+            return 0;
+        } elseif (count($parts) == 1) {
+            return $parts[0];
+        }
+
+        return floatval($parts[0]) / floatval($parts[1]);
+
+    }
+}
