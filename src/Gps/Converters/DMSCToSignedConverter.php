@@ -6,8 +6,8 @@ use SimonJakowicz\Gps\Converters\ConverterInterface;
 
 /**
  * Used to convert latitude and longitude
- * From Degrees, Minutes, Seconds and Compass direction format e.g. 41 25 01N, 120 58 57W
- * To Signed Degree Format e.g. -31.96, 115.84
+ * From Degrees, Minutes, Seconds and Compass direction format e.g. 41 25 01 N, 120 58 57 W
+ * To Signed Degree Format e.g. 41.416944444444, -120.9825
  *
  * @author Simon Jakowicz
  */
@@ -41,9 +41,9 @@ class DMSCToSignedConverter implements ConverterInterface
     /**
      * initialise the GPS calculator
      * @param array  $gpsLatitude
-     * @param string $gpsLatitudeRef
+     * @param string $gpsLatitudeDirection
      * @param array  $gpsLongitude
-     * @param string $gpsLongitudeRef
+     * @param string $gpsLongitudeDirection
      */
     public function __construct(array $gpsLatitude, $gpsLatitudeDirection, array $gpsLongitude, $gpsLongitudeDirection)
     {
@@ -98,7 +98,7 @@ class DMSCToSignedConverter implements ConverterInterface
 
     /**
      * calculate a specific GPS value based on its D/M/S/C value
-     * @param  int|string $gpsValue
+     * @param  int|string $gpsValue e.g. 3, 10, 1/3, 5/9
      * @return float
      */
     private function gpsValueCalculate($gpsValue)
