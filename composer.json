@@ -1,5 +1,5 @@
  {
-    "name": "SimonJakowicz/GpsConverter",
+    "name": "jakowicz/gps-converter",
     "type": "library",
     "description": "A very simple library for converting between different GPS co-ordinate formats",
     "keywords": ["gps", "latitude", "longitude", "converter"],
@@ -9,7 +9,7 @@
         {
             "name": "Simon Jakowicz",
             "email": "simon@jakowicz.com",
-            "homepage": "www.jakowicz.com",
+            "homepage": "http://www.jakowicz.com",
             "role": "Developer"
         }
     ],
