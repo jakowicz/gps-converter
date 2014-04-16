@@ -15,7 +15,7 @@ Add this to your composer.json file
             "jakowicz/gps-converter": "0.2"
         }
     }
-    ```
+```
 
 # Prerequisites
 
