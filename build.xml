@@ -4,6 +4,12 @@
         A very simple library for converting between different GPS co-ordinate formats
     </description>
     
+    <target name="composer-install">
+        <exec executable="composer">
+            <arg value="install" />
+        </exec>
+    </target>
+
     <target name="test">
         <exec executable="phpunit"></exec>
     </target>
