@@ -1,0 +1,11 @@
+<project name="GPS-Converter" default="test" basedir=".">
+    
+    <description>
+        A very simple library for converting between different GPS co-ordinate formats
+    </description>
+    
+    <target name="test">
+        <exec executable="phpunit"></exec>
+    </target>
+
+</project>
