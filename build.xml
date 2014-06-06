@@ -10,7 +10,8 @@
     <property name="phpcs-psr1-log"  location="${log-dir}/phpcs-psr1.xml"/>
     <property name="phpcs-psr2-log"  location="${log-dir}/phpcs-psr2.xml"/>
     <property name="phpmd-log"       location="${log-dir}/phpmd.xml"/>
-    <property name="source-dir"      location="${basedir}/src/"/>
+    <property name="source-dir"      location="${basedir}/src"/>
+    <property name="bin"             location="${basedir}/vendor/bin"/>
 
 
     
@@ -31,25 +32,25 @@
     </target>
 
     <target name="phpcpd">
-        <exec executable="phpcpd">
+        <exec executable="${bin}/phpcpd">
             <arg line="--log-pmd ${phpcpd-log} ${source-dir}" />
         </exec>
     </target>
 
     <target name="phpcs-psr1">
-        <exec executable="phpcs"> 
+        <exec executable="${bin}/phpcs"> 
             <arg line="--report=checkstyle --report-file=${phpcs-psr1-log} --standard=PSR1 ${source-dir}" />
         </exec>
     </target>
 
     <target name="phpcs-psr2">
-        <exec executable="phpcs"> 
+        <exec executable="${bin}/phpcs"> 
             <arg line="--report=checkstyle --report-file=${phpcs-psr2-log} --standard=PSR2 ${source-dir}" />
         </exec>
     </target>
 
     <target name="phpmd">
-        <exec executable="./vendor/bin/phpmd">
+        <exec executable="${bin}/phpmd">
             <arg line="${source-dir} xml codesize,unusedcode,naming,design --reportfile ${phpmd-log}" />
         </exec>
     </target>
