@@ -3,6 +3,16 @@
     <description>
         A very simple library for converting between different GPS co-ordinate formats
     </description>
+
+    <property name="log-dir"         location="${basedir}/tmp/"/>
+    <property name="clover-log"      location="${log-dir}/clover.xml"/>
+    <property name="phpcpd-log"      location="${log-dir}/phpcpd.xml"/>
+    <property name="phpcs-psr1-log"  location="${log-dir}/phpcs-psr1.xml"/>
+    <property name="phpcs-psr2-log"  location="${log-dir}/phpcs-psr2.xml"/>
+    <property name="phpmd-log"       location="${log-dir}/phpmd.xml"/>
+    <property name="source-dir"      location="${basedir}/src/"/>
+
+
     
     <target name="composer-install">
         <exec executable="composer">
@@ -11,7 +21,40 @@
     </target>
 
     <target name="test">
-        <exec executable="phpunit"></exec>
+        <exec executable="phpunit" failonerror="true"></exec>
     </target>
+
+    <target name="test-with-coverage">
+        <exec executable="phpunit" failonerror="true">
+            <arg line="--coverage-clover ${clover-log} ${source-dir}"/>
+        </exec>
+    </target>
+
+    <target name="phpcpd">
+        <exec executable="phpcpd">
+            <arg line="--log-pmd ${phpcpd-log} ${source-dir}" />
+        </exec>
+    </target>
+
+    <target name="phpcs-psr1">
+        <exec executable="phpcs"> 
+            <arg line="--report=checkstyle --report-file=${phpcs-psr1-log} --standard=PSR1 ${source-dir}" />
+        </exec>
+    </target>
+
+    <target name="phpcs-psr2">
+        <exec executable="phpcs"> 
+            <arg line="--report=checkstyle --report-file=${phpcs-psr2-log} --standard=PSR2 ${source-dir}" />
+        </exec>
+    </target>
+
+    <target name="phpmd">
+        <exec executable="./vendor/bin/phpmd">
+            <arg line="${source-dir} xml codesize,unusedcode,naming,design --reportfile ${phpmd-log}" />
+        </exec>
+    </target>
+
+    <target name="phpcs" depends="phpcs-psr1, phpcs-psr2"></target>
+    <target name="build" depends="composer-install, test-with-coverage, phpcpd, phpcs, phpmd"></target>
 
 </project>
