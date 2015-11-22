@@ -16,27 +16,38 @@ class DMSCToSignedConverter implements ConverterInterface
 
     /**
      * Latitude - Degrees, Minutes, Seconds and Compass direction format
+     *
      * @var string
      */
     private $gpsLatitude;
 
     /**
      * Latitude compass direction, should be either "N" or "S" for "North" and "South"
+     *
      * @var string
      */
     private $gpsLatitudeRef;
 
     /**
      * Longitude - Degrees, Minutes, Seconds and Compass direction format
+     *
      * @var string
      */
     private $gpsLongitude;
 
     /**
      * Longitude compass direction, should be either "E" or "W" for "East" and "West"
+     *
      * @var string
      */
     private $gpsLongitudeRef;
+
+    /**
+     * Meters above sea level
+     *
+     * @var string
+     */
+    private $gpsAltitude;
 
     /**
      * initialise the GPS calculator
@@ -44,18 +55,19 @@ class DMSCToSignedConverter implements ConverterInterface
      * @param string $gpsLatitudeDirection
      * @param array  $gpsLongitude
      * @param string $gpsLongitudeDirection
+     * @param string $gpsAltitude
      */
-    public function __construct(array $gpsLatitude, $gpsLatitudeDirection, array $gpsLongitude, $gpsLongitudeDirection)
+    public function __construct(array $gpsLatitude, $gpsLatitudeDirection, array $gpsLongitude, $gpsLongitudeDirection, $gpsAltitude)
     {
         $this->gpsLatitude           = $gpsLatitude;
         $this->gpsLatitudeDirection  = $gpsLatitudeDirection;
         $this->gpsLongitude          = $gpsLongitude;
         $this->gpsLongitudeDirection = $gpsLongitudeDirection;
+        $this->gpsAltitude           = $gpsAltitude;
     }
 
     /**
-     * get signed latitude value
-     * @return string
+     * {@inheritdoc}
      */
     public function getLatitude()
     {
@@ -71,8 +83,7 @@ class DMSCToSignedConverter implements ConverterInterface
     }
 
     /**
-     * get signed longitude value
-     * @return string
+     * {@inheritdoc}
      */
     public function getLongitude()
     {
@@ -88,8 +99,15 @@ class DMSCToSignedConverter implements ConverterInterface
     }
 
     /**
-     * get signed co-ordinates
-     * @return string
+     * {@inheritdoc}
+     */
+    public function getAltitude()
+    {
+        return $this->gpsValueCalculate($this->gpsAltitude);
+    }
+
+    /**
+     * {@inheritdoc}
      */
     public function getCoordinates()
     {

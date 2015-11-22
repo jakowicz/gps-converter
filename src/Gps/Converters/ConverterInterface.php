@@ -12,18 +12,28 @@ interface ConverterInterface
 
     /**
      * get new latitude value
+     *
      * @return string
      */
     public function getLatitude();
 
     /**
      * get new longitude value
+     *
      * @return string
      */
     public function getLongitude();
 
     /**
+     * get new altitude value
+     *
+     * @return string
+     */
+    public function getAltitude();
+
+    /**
      * get the new gps co-ordinates
+     *
      * @return string
      */
     public function getCoordinates();
