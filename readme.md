@@ -12,7 +12,7 @@ Add this to your composer.json file
  ```js
     {
         "require": {
-            "jakowicz/gps-converter": "0.2"
+            "jakowicz/gps-converter": "0.3"
         }
     }
 ```
